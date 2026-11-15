@@ -1,0 +1,60 @@
+{
+ "rows": 3,
+ "os": 0,
+ "page": 1,
+ "total": 5960,
+ "documents": {
+  "D33295056": {
+   "id": "33295056",
+   "count": "Kenya",
+   "docty": "Resettlement Plan",
+   "lang": "English",
+   "entityids": {
+    "entityid": "090224b08882d945_1_0"
+   },
+   "docdt": "2021-07-01T04:00:00Z",
+   "abstracts": {
+    "cdata!": "The development objective of the Coastal Region Water Security and Climate Resilience Project for Kenya is to sustainably increase bulk water supply to Mombasa County and Kwale County and increase access to water and sanitation in Kwale County. Some of the negative impacts and mitigation measures include: (1) cash compensation for all structures at replacement cost, based on professional valuation; (2) compensation for loss of income for three months or the period of the time actually required to re-establish the business elsewhere if greater; (3) assistance with transport for their property and salvaged properties during resettlement for all project affected households (PAHs) who will be physically displaced; (4) taxes and fees, and registration costs for registration of property to be added to valuation and paid for directly; and (5) resettlement near to kin and former neighbors to maintain informal support networks where feasible."
+   },
+   "display_title": "Kenya - Coastal Region Water Security and Climate Resilience Project : Resettlement Plan (Vol. 4 of 4) : Resettlement Action Plan 2 for Mwache Multipurpose Dam Project",
+   "pdfurl": "http://documents.worldbank.org/curated/en/633061627382758577/pdf/Resettlement-Action-Plan-2-for-Mwache-Multipurpose-Dam-Project.pdf",
+   "guid": "633061627382758577",
+   "url": "http://documents.worldbank.org/curated/en/633061627382758577"
+  },
+  "D29925118": {
+   "id": "29925118",
+   "count": "Kenya",
+   "docty": "Resettlement Plan",
+   "lang": "English",
+   "entityids": {
+    "entityid": "090224b085b0aac5_2_0"
+   },
+   "docdt": "2017-11-01T04:00:00Z",
+   "abstracts": {
+    "cdata!": "The development objective of the Informal Settlements Improvement Project is to improve living conditions in informal settlements in selected municipalities in Kenya. Some of the negative measures include: (i) cash compensation at replacement cost calculated without depreciation for loss of structure to the owners; (ii) loss of income equivalent to two month\u2019s rent incase the affected structure is rented; (iii) for the loss of shelter, two month\u2019s rent to be paid to the tenant to look for alternative accommodation during repairs of the affected parts of the structure with an option to resume tenancy at the completion of reconstruction or repairs; (iii) if the rented premises are used for business, a loss of livelihood equivalent to five days of loss of profit will be provided; (iv) subsistence allowance equivalent two months rent to compensate for loss of income; (v) cash grant equivalent five days daily income to compensate for the loss of business to the business owner or trader; and (vi) additional livelihood support of Ksh 5000 for all vulnerable Project Affected Persons (PAPs)."
+   },
+   "display_title": "Kenya - Informal Settlements Improvement Project : Resettlement Plan (Vol. 3 of 8) : Abbreviated resettlement action plan for infrastructure upgrading of Talai, Swahili village, and Motobo informal settlements, Kericho county",
+   "pdfurl": "http://documents.worldbank.org/curated/en/508711527484186208/pdf/KISIP-KERICHO-COUNTY-RAP-29th-Nov-2017-FINAL.pdf",
+   "guid": "508711527484186208",
+   "url": "http://documents.worldbank.org/curated/en/508711527484186208"
+  },
+  "D30783307": {
+   "id": "30783307",
+   "count": "Kenya",
+   "docty": "Environmental Assessment",
+   "lang": "English",
+   "entityids": {
+    "entityid": "090224b0868c2bc5_1_0"
+   },
+   "docdt": "2017-04-01T04:00:00Z",
+   "abstracts": {
+    "cdata!": "The development objective of the Urban Water and Sanitation Output Based Aid (OBA) Fund for Low Income Areas Project for Kenya is to increase the number of people in low income areas with access to improved water supply and sanitation services in Kenyan towns and cities. Some of the negative impacts and mitigation measures include: (1) proper solid waste management as per national environmental management authority (NEMA) waste management regulations; (2) control of dust and hydrocarbon fumes during trenching and excavation by wetting using water; (3) control noise to be within the recommended limits to avoid disturbance of neighbors; (4) use of physical barriers and labeled icons to prevent and warn the public on dangers of construction activities; (5) provision of a means to allow migration of fish and other aquatic organism upstream and downstream across the weir; (6) sensitize the public on consequences of accumulation of stagnant water near leakage points; and (7) the water supply management to be done using guidelines for water user association from the Ministry of Environment, Water, and Natural Resources."
+   },
+   "display_title": "Kenya - Urban Water and Sanitation OBA Fund for Low Income Areas Project : Environmental Assessment (Vol. 12 of 16) : Environmental and Social Impact Assessment for Murang\u2019a Water and Sanitation Company Limited",
+   "pdfurl": "http://documents.worldbank.org/curated/en/117401548409190762/pdf/ESIA-for-Muranga-Water-and-Sanitation-Company-Ltd.pdf",
+   "guid": "117401548409190762",
+   "url": "http://documents.worldbank.org/curated/en/117401548409190762"
+  },
+  "facets": {}
+ }
+}

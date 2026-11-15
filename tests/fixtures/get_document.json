@@ -1,0 +1,694 @@
+{
+ "rows": 10,
+ "os": 0,
+ "page": 1,
+ "total": 1,
+ "documents": {
+  "D33295056": {
+   "id": "33295056",
+   "admreg": "Eastern and Southern Africa",
+   "authors": {
+    "0": {
+     "author": "Kenya"
+    }
+   },
+   "count": "Kenya",
+   "docna": {
+    "0": {
+     "docna": "Resettlement Action Plan 2 for Mwache Multipurpose Dam Project"
+    }
+   },
+   "docty": "Resettlement Plan",
+   "owner": "Water East Africa Region (SAEW3)",
+   "projn": "KE-Coastal Region Water Security and Climate Resilience Project -- P145559",
+   "subsc": "FY17 - Other Water Supply, Sanitation and Waste Management,FY17 - Water Supply,FY17 - Sanitation,FY17 - Other Agriculture, Fishing and Forestry",
+   "trustfund": "TF016258 - AFR-Water, poverty, shared prosperity, and climate resilience in the co",
+   "theme": "FY17 - Rural Development,FY17 - Urban Development,FY17 - Water Institutions, Policies and Reform,FY17 - Urban Infrastructure and Service Delivery,FY17 - Water Resource Management,FY17 - Rural Infrastructure and service delivery",
+   "prdln": "IBRD/IDA",
+   "seccl": "Public",
+   "lang": "English",
+   "lndinstr": {
+    "0": {
+     "lndinstr": "Investment Project Financing"
+    }
+   },
+   "lndinstr_exact": "Investment Project Financing",
+   "entityids": {
+    "entityid": "090224b08882d945_1_0"
+   },
+   "majtheme": "FY17 - Urban and Rural Development,FY17 - Environment and Natural Resource Management",
+   "subtopic": "Agricultural Irrigation and Drainage,Climate Change and Agriculture,Crops and Crop Management Systems,Hydrology,Irrigation and Drainage,Land Administration,Municipal Management and Reform,Urban Governance and Management,Urban Housing,Urban Housing and Land Settlements",
+   "teratopic": "Agriculture,Communities and Human Settlements,Public Sector Development,Urban Development,Water Resources",
+   "sectr": {
+    "0": {
+     "sector": "Agriculture, Fishing and Forestry"
+    },
+    "1": {
+     "sector": "Water, Sanitation and Waste Management"
+    }
+   },
+   "repnb": "SFG5535",
+   "docdt": "2021-07-01T04:00:00Z",
+   "datestored": "2021-07-27T04:00:00Z",
+   "keywd": {
+    "0": {
+     "keywd": "risk profile"
+    },
+    "1": {
+     "keywd": " market value of land"
+    },
+    "2": {
+     "keywd": " Below the Poverty Line"
+    },
+    "3": {
+     "keywd": " above mean sea level"
+    },
+    "4": {
+     "keywd": " parcel of land"
+    },
+    "5": {
+     "keywd": " standard of living"
+    },
+    "6": {
+     "keywd": " main dam"
+    },
+    "7": {
+     "keywd": " residential structures"
+    },
+    "8": {
+     "keywd": " check dam"
+    },
+    "9": {
+     "keywd": " Land Registration"
+    },
+    "10": {
+     "keywd": " resettlement action plan"
+    },
+    "11": {
+     "keywd": " irrigation water supply"
+    },
+    "12": {
+     "keywd": " access to water"
+    },
+    "13": {
+     "keywd": " project affected persons"
+    },
+    "14": {
+     "keywd": " income generating activity"
+    },
+    "15": {
+     "keywd": " community land"
+    },
+    "16": {
+     "keywd": " income earning capacity"
+    },
+    "17": {
+     "keywd": " displacement of persons"
+    },
+    "18": {
+     "keywd": " land acquisition process"
+    },
+    "19": {
+     "keywd": " value of asset"
+    },
+    "20": {
+     "keywd": " valuation of asset"
+    },
+    "21": {
+     "keywd": " infrastructure and services"
+    },
+    "22": {
+     "keywd": " high concrete dam"
+    },
+    "23": {
+     "keywd": " water treatment plant"
+    },
+    "24": {
+     "keywd": " compensation for loss"
+    },
+    "25": {
+     "keywd": " payment of compensation"
+    },
+    "26": {
+     "keywd": " sanitation and irrigation"
+    },
+    "27": {
+     "keywd": " acquisition of land"
+    },
+    "28": {
+     "keywd": " poor financial management"
+    },
+    "29": {
+     "keywd": " irrigation command area"
+    },
+    "30": {
+     "keywd": " resolution of dispute"
+    },
+    "31": {
+     "keywd": " category of assets"
+    },
+    "32": {
+     "keywd": " scheme will"
+    },
+    "33": {
+     "keywd": " inventory of asset"
+    },
+    "34": {
+     "keywd": " pumped water supply"
+    },
+    "35": {
+     "keywd": " Access to Education"
+    },
+    "36": {
+     "keywd": " person with disability"
+    },
+    "37": {
+     "keywd": " Resettlement Policy Framework"
+    },
+    "38": {
+     "keywd": " resettlement and rehabilitation"
+    },
+    "39": {
+     "keywd": " agriculture and livestock"
+    },
+    "40": {
+     "keywd": " bulk water supply"
+    },
+    "41": {
+     "keywd": " compensation for land"
+    },
+    "42": {
+     "keywd": " Resettlement action plans"
+    },
+    "43": {
+     "keywd": " resettlement strategy"
+    },
+    "44": {
+     "keywd": " reservoir area"
+    },
+    "45": {
+     "keywd": " replacement cost"
+    },
+    "46": {
+     "keywd": " asset inventory"
+    },
+    "47": {
+     "keywd": " land dispute"
+    },
+    "48": {
+     "keywd": " restoration plan"
+    },
+    "49": {
+     "keywd": " cash compensation"
+    },
+    "50": {
+     "keywd": " resettlement activities"
+    },
+    "51": {
+     "keywd": " village elder"
+    },
+    "52": {
+     "keywd": " cultural preference"
+    },
+    "53": {
+     "keywd": " prudent use"
+    },
+    "54": {
+     "keywd": " financial training"
+    },
+    "55": {
+     "keywd": " access road"
+    },
+    "56": {
+     "keywd": " land owner"
+    },
+    "57": {
+     "keywd": " temporary housing"
+    },
+    "58": {
+     "keywd": " affected villages"
+    },
+    "59": {
+     "keywd": " displaced person"
+    },
+    "60": {
+     "keywd": " household level"
+    },
+    "61": {
+     "keywd": " resettlement plan"
+    },
+    "62": {
+     "keywd": " affected communities"
+    },
+    "63": {
+     "keywd": " Water Security"
+    },
+    "64": {
+     "keywd": " business structure"
+    },
+    "65": {
+     "keywd": " livelihood strategy"
+    },
+    "66": {
+     "keywd": " involuntary resettlement"
+    },
+    "67": {
+     "keywd": " consultation process"
+    },
+    "68": {
+     "keywd": " resettlement assistance"
+    },
+    "69": {
+     "keywd": " cadastral map"
+    },
+    "70": {
+     "keywd": " resettlement land"
+    },
+    "71": {
+     "keywd": " field survey"
+    },
+    "72": {
+     "keywd": " coastal region"
+    },
+    "73": {
+     "keywd": " socio-economic survey"
+    },
+    "74": {
+     "keywd": " education official"
+    },
+    "75": {
+     "keywd": " land parcel"
+    },
+    "76": {
+     "keywd": " traditional livelihood"
+    },
+    "77": {
+     "keywd": " local administrator"
+    },
+    "78": {
+     "keywd": " dam design"
+    },
+    "79": {
+     "keywd": " registered land"
+    },
+    "80": {
+     "keywd": " operational area"
+    },
+    "81": {
+     "keywd": " multipurpose dam"
+    },
+    "82": {
+     "keywd": " adjudication process"
+    },
+    "83": {
+     "keywd": " dam operation"
+    },
+    "84": {
+     "keywd": " production level"
+    },
+    "85": {
+     "keywd": " census data"
+    },
+    "86": {
+     "keywd": " job opportunity"
+    },
+    "87": {
+     "keywd": " land records"
+    },
+    "88": {
+     "keywd": " job opportunities"
+    },
+    "89": {
+     "keywd": " construction activities"
+    },
+    "90": {
+     "keywd": " cattle dip"
+    },
+    "91": {
+     "keywd": " legal framework"
+    },
+    "92": {
+     "keywd": " public consultation"
+    },
+    "93": {
+     "keywd": " signed agreements"
+    },
+    "94": {
+     "keywd": " physically challenged"
+    },
+    "95": {
+     "keywd": " strategic location"
+    },
+    "96": {
+     "keywd": " resettlement area"
+    },
+    "97": {
+     "keywd": " traditional lands"
+    },
+    "98": {
+     "keywd": " interest group"
+    },
+    "99": {
+     "keywd": " other asset"
+    },
+    "100": {
+     "keywd": " utility subsidies"
+    },
+    "101": {
+     "keywd": " community meetings"
+    },
+    "102": {
+     "keywd": " registration process"
+    },
+    "103": {
+     "keywd": " construction support"
+    },
+    "104": {
+     "keywd": " temporary support"
+    },
+    "105": {
+     "keywd": " borrower documents"
+    },
+    "106": {
+     "keywd": " resettlement sites"
+    },
+    "107": {
+     "keywd": " baseline information"
+    },
+    "108": {
+     "keywd": " ethnic group"
+    },
+    "109": {
+     "keywd": " extensive consultation"
+    },
+    "110": {
+     "keywd": " cultural network"
+    },
+    "111": {
+     "keywd": " community group"
+    },
+    "112": {
+     "keywd": " cultural asset"
+    },
+    "113": {
+     "keywd": " employment opportunity"
+    },
+    "114": {
+     "keywd": " traditional lifestyles"
+    },
+    "115": {
+     "keywd": " temporary resettlement"
+    },
+    "116": {
+     "keywd": " movable asset"
+    },
+    "117": {
+     "keywd": " literature review"
+    },
+    "118": {
+     "keywd": " restoration activities"
+    },
+    "119": {
+     "keywd": " employment opportunities"
+    },
+    "120": {
+     "keywd": " vulnerable household"
+    },
+    "121": {
+     "keywd": " field work"
+    },
+    "122": {
+     "keywd": " lost land"
+    },
+    "123": {
+     "keywd": " cultural characteristics"
+    },
+    "124": {
+     "keywd": " road act"
+    },
+    "125": {
+     "keywd": " community consultation"
+    },
+    "126": {
+     "keywd": " compensation strategy"
+    },
+    "127": {
+     "keywd": " legal owner"
+    },
+    "128": {
+     "keywd": " community facility"
+    },
+    "129": {
+     "keywd": " first stage"
+    },
+    "130": {
+     "keywd": " sanitation facility"
+    },
+    "131": {
+     "keywd": " individual household"
+    },
+    "132": {
+     "keywd": " land law"
+    },
+    "133": {
+     "keywd": " family relationship"
+    },
+    "134": {
+     "keywd": " legal claim"
+    },
+    "135": {
+     "keywd": " consultation meeting"
+    },
+    "136": {
+     "keywd": " replacement land"
+    },
+    "137": {
+     "keywd": " affected households"
+    },
+    "138": {
+     "keywd": " irrigation area"
+    },
+    "139": {
+     "keywd": " utility bill"
+    },
+    "140": {
+     "keywd": " aerial imagery"
+    },
+    "141": {
+     "keywd": " shopping centre"
+    },
+    "142": {
+     "keywd": " health facility"
+    },
+    "143": {
+     "keywd": " transaction cost"
+    },
+    "144": {
+     "keywd": " business skill"
+    },
+    "145": {
+     "keywd": " works contract"
+    },
+    "146": {
+     "keywd": " productive use"
+    },
+    "147": {
+     "keywd": " resettlement impacts"
+    },
+    "148": {
+     "keywd": " land subdivision"
+    },
+    "149": {
+     "keywd": " climate resilience"
+    },
+    "150": {
+     "keywd": " transfer tax"
+    },
+    "151": {
+     "keywd": " earth road"
+    },
+    "152": {
+     "keywd": " sediment management"
+    },
+    "153": {
+     "keywd": " Host Communities"
+    },
+    "154": {
+     "keywd": " welfare support"
+    },
+    "155": {
+     "keywd": " potential investment"
+    },
+    "156": {
+     "keywd": " storage capacity"
+    },
+    "157": {
+     "keywd": " investment resource"
+    },
+    "158": {
+     "keywd": " resettlement program"
+    },
+    "159": {
+     "keywd": " adverse resettlement"
+    },
+    "160": {
+     "keywd": " financial planning"
+    },
+    "161": {
+     "keywd": " informed participation"
+    },
+    "162": {
+     "keywd": " new roads"
+    },
+    "163": {
+     "keywd": " credit facilities"
+    },
+    "164": {
+     "keywd": " field data"
+    },
+    "165": {
+     "keywd": " reasonable estimate"
+    },
+    "166": {
+     "keywd": " household investment"
+    },
+    "167": {
+     "keywd": " dam building"
+    },
+    "168": {
+     "keywd": " base camp"
+    },
+    "169": {
+     "keywd": " raw water"
+    },
+    "170": {
+     "keywd": " competitive procurement"
+    },
+    "171": {
+     "keywd": " Police Post"
+    },
+    "172": {
+     "keywd": " compensation amount"
+    },
+    "173": {
+     "keywd": " public asset"
+    },
+    "174": {
+     "keywd": " legal justice"
+    },
+    "175": {
+     "keywd": " dwelling house"
+    },
+    "176": {
+     "keywd": " socio-economic status"
+    },
+    "177": {
+     "keywd": " Land Ownership"
+    },
+    "178": {
+     "keywd": " family transfer"
+    },
+    "179": {
+     "keywd": " compensation payment"
+    },
+    "180": {
+     "keywd": " flood area"
+    },
+    "181": {
+     "keywd": " census fieldwork"
+    },
+    "182": {
+     "keywd": " opinion leaders"
+    },
+    "183": {
+     "keywd": " floor area"
+    },
+    "184": {
+     "keywd": " Indigenous Peoples"
+    },
+    "185": {
+     "keywd": " exceptional circumstance"
+    },
+    "186": {
+     "keywd": " public meeting"
+    },
+    "187": {
+     "keywd": " public dissemination"
+    },
+    "188": {
+     "keywd": " Leave Bank"
+    },
+    "189": {
+     "keywd": " credit financing"
+    },
+    "190": {
+     "keywd": " religious norms"
+    },
+    "191": {
+     "keywd": " opportunistic investment"
+    },
+    "192": {
+     "keywd": " irrigation scheme"
+    },
+    "193": {
+     "keywd": " monitoring mechanism"
+    },
+    "194": {
+     "keywd": " micro irrigation"
+    },
+    "195": {
+     "keywd": " Irrigated Agriculture"
+    },
+    "196": {
+     "keywd": " management committee"
+    },
+    "197": {
+     "keywd": " sacred places"
+    },
+    "198": {
+     "keywd": " compensation rate"
+    },
+    "199": {
+     "keywd": " Ownership Share Type"
+    }
+   },
+   "volnb": "4",
+   "geo_regions": {
+    "0": {
+     "geo_region": "East Africa"
+    },
+    "1": {
+     "geo_region": "Sub-Saharan Africa"
+    },
+    "2": {
+     "geo_region": "World"
+    }
+   },
+   "majdocty": "Project Documents",
+   "abstracts": {
+    "cdata!": "The development objective of the Coastal Region Water Security and Climate Resilience Project for Kenya is to sustainably increase bulk water supply to Mombasa County and Kwale County and increase access to water and sanitation in Kwale County. Some of the negative impacts and mitigation measures include: (1) cash compensation for all structures at replacement cost, based on professional valuation; (2) compensation for loss of income for three months or the period of the time actually required to re-establish the business elsewhere if greater; (3) assistance with transport for their property and salvaged properties during resettlement for all project affected households (PAHs) who will be physically displaced; (4) taxes and fees, and registration costs for registration of property to be added to valuation and paid for directly; and (5) resettlement near to kin and former neighbors to maintain informal support networks where feasible."
+   },
+   "repnme": {
+    "repnme": "Kenya - Coastal Region Water Security and Climate Resilience Project : Resettlement Plan"
+   },
+   "display_title": "Kenya - Coastal Region Water Security and Climate Resilience Project : Resettlement Plan (Vol. 4 of 4) : Resettlement Action Plan 2 for Mwache Multipurpose Dam Project",
+   "disclosure_date": "2021-07-26T04:00:00Z",
+   "pdfurl": "http://documents.worldbank.org/curated/en/633061627382758577/pdf/Resettlement-Action-Plan-2-for-Mwache-Multipurpose-Dam-Project.pdf",
+   "txturl": "http://documents.worldbank.org/curated/en/633061627382758577/text/Resettlement-Action-Plan-2-for-Mwache-Multipurpose-Dam-Project.txt",
+   "EnvironmentalCategory": "A",
+   "disclstat": "Disclosed",
+   "chronical_docm_id": "090224b08882d945",
+   "totvolnb": "4",
+   "versiontyp": "Final",
+   "historic_topic": "Agriculture,Communities and Human Settlements,Public Sector Development,Urban Development,Water Resources",
+   "projectid": "P145559",
+   "guid": "633061627382758577",
+   "origu": "AECE2 WB OFF:NAIROBI KE/UG/RW/SO (AECE2)",
+   "prdln_exact": "IBRD/IDA",
+   "available_in": "English",
+   "fullavailablein": [],
+   "url": "http://documents.worldbank.org/curated/en/633061627382758577"
+  },
+  "facets": {}
+ }
+}

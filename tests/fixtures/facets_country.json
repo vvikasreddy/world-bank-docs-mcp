@@ -1,0 +1,87 @@
+{
+ "rows": 0,
+ "os": 0,
+ "page": 0,
+ "total": 623114,
+ "documents": {
+  "facets": {
+   "count_exact": {
+    "0": {
+     "count": 64504,
+     "name": "World",
+     "label": "World"
+    },
+    "1": {
+     "count": 31103,
+     "name": "India",
+     "label": "India"
+    },
+    "2": {
+     "count": 16837,
+     "name": "China",
+     "label": "China"
+    },
+    "3": {
+     "count": 16581,
+     "name": "Africa",
+     "label": "Africa"
+    },
+    "4": {
+     "count": 12749,
+     "name": "Brazil",
+     "label": "Brazil"
+    },
+    "5": {
+     "count": 12477,
+     "name": "Indonesia",
+     "label": "Indonesia"
+    },
+    "6": {
+     "count": 12346,
+     "name": "Pakistan",
+     "label": "Pakistan"
+    },
+    "7": {
+     "count": 12037,
+     "name": "Nigeria",
+     "label": "Nigeria"
+    },
+    "8": {
+     "count": 10858,
+     "name": "Bangladesh",
+     "label": "Bangladesh"
+    },
+    "9": {
+     "count": 10646,
+     "name": "Viet Nam",
+     "label": "Viet Nam"
+    },
+    "10": {
+     "count": 9966,
+     "name": "Ethiopia",
+     "label": "Ethiopia"
+    },
+    "11": {
+     "count": 9738,
+     "name": "Kenya",
+     "label": "Kenya"
+    },
+    "12": {
+     "count": 7789,
+     "name": "Mozambique",
+     "label": "Mozambique"
+    },
+    "13": {
+     "count": 7616,
+     "name": "Turkiye",
+     "label": "Turkiye"
+    },
+    "14": {
+     "count": 7143,
+     "name": "Tanzania",
+     "label": "Tanzania"
+    }
+   }
+  }
+ }
+}

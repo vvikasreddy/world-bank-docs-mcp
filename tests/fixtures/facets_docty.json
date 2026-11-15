@@ -1,0 +1,87 @@
+{
+ "rows": 0,
+ "os": 0,
+ "page": 0,
+ "total": 623114,
+ "documents": {
+  "facets": {
+   "docty_exact": {
+    "0": {
+     "count": 144407,
+     "name": "Procurement Plan",
+     "label": "Procurement Plan"
+    },
+    "1": {
+     "count": 59904,
+     "name": "Implementation Status and Results Report",
+     "label": "Implementation Status and Results Report"
+    },
+    "2": {
+     "count": 30490,
+     "name": "Auditing Document",
+     "label": "Auditing Document"
+    },
+    "3": {
+     "count": 27069,
+     "name": "Working Paper",
+     "label": "Working Paper"
+    },
+    "4": {
+     "count": 24818,
+     "name": "Brief",
+     "label": "Brief"
+    },
+    "5": {
+     "count": 24258,
+     "name": "Agreement",
+     "label": "Agreement"
+    },
+    "6": {
+     "count": 18557,
+     "name": "Environmental Assessment",
+     "label": "Environmental Assessment"
+    },
+    "7": {
+     "count": 17460,
+     "name": "Report",
+     "label": "Report"
+    },
+    "8": {
+     "count": 16102,
+     "name": "Announcement",
+     "label": "Announcement"
+    },
+    "9": {
+     "count": 15670,
+     "name": "Project Information Document",
+     "label": "Project Information Document"
+    },
+    "10": {
+     "count": 13207,
+     "name": "Project Paper",
+     "label": "Project Paper"
+    },
+    "11": {
+     "count": 11418,
+     "name": "Policy Research Working Paper",
+     "label": "Policy Research Working Paper"
+    },
+    "12": {
+     "count": 10710,
+     "name": "Disbursement Letter",
+     "label": "Disbursement Letter"
+    },
+    "13": {
+     "count": 9638,
+     "name": "Integrated Safeguards Data Sheet",
+     "label": "Integrated Safeguards Data Sheet"
+    },
+    "14": {
+     "count": 8625,
+     "name": "Implementation Completion and Results Report",
+     "label": "Implementation Completion and Results Report"
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,36 @@
+{
+ "rows": 3,
+ "os": 0,
+ "page": 1,
+ "total": 12477,
+ "documents": {
+  "D40139005": {
+   "id": "40139005",
+   "docty": "Procurement Plan",
+   "docdt": "2026-11-13T05:00:00Z",
+   "display_title": "Indonesia - EAST ASIA AND PACIFIC- P508811- Collaborative Approach for Resilient Surveillance and Pandemic Preparedness in Indonesia Project - Procurement Plan",
+   "pdfurl": "https://documents.worldbank.org/curated/en/099111326024038029/pdf/P508811-ba0229d6-8c3d-42d6-bfed-3f5327ff9a53.pdf",
+   "guid": "099111326024038029",
+   "url": "http://documents.worldbank.org/curated/en/099111326024038029"
+  },
+  "D40138873": {
+   "id": "40138873",
+   "docty": "Implementation Completion Report Review",
+   "docdt": "2026-11-12T05:00:00Z",
+   "display_title": "Indonesia - Irrigation Modernization Rehabilitation",
+   "pdfurl": "https://documents.worldbank.org/curated/en/099111226110513582/pdf/P157585-a54d95c6-dcc2-4e66-beaf-4f9b5d296d0b.pdf",
+   "guid": "099111226110513582",
+   "url": "http://documents.worldbank.org/curated/en/099111226110513582"
+  },
+  "D40138501": {
+   "id": "40138501",
+   "docty": "Procurement Plan",
+   "docdt": "2026-11-11T05:00:00Z",
+   "display_title": "Indonesia - EAST ASIA AND PACIFIC- P180811- Indonesia Health Systems Strengthening Project - Procurement Plan",
+   "pdfurl": "https://documents.worldbank.org/curated/en/099111026215527321/pdf/P180811-8de0b8dc-9ac4-4858-a0b7-64018465717b.pdf",
+   "guid": "099111026215527321",
+   "url": "http://documents.worldbank.org/curated/en/099111026215527321"
+  },
+  "facets": {}
+ }
+}
