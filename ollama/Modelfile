@@ -1,0 +1,4 @@
+FROM qwen2.5:3b
+# Stock Ollama runs this model with a 4096-token context. Tool definitions plus one tool
+# result exceed that, and Ollama then silently drops the oldest messages (the system prompt).
+PARAMETER num_ctx 16384

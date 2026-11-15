@@ -84,6 +84,22 @@ COUNTRIES = [FacetValue(name=n, count=c) for n, c in
 SECTORS = [FacetValue(name=n, count=c) for n, c in
            [("Water, Sanitation and Waste Management", 40000), ("Education", 30000),
             ("Water Resources", 1000), ("Transportation", 20000)]]
+REGIONS = [FacetValue(name=n, count=c) for n, c in
+           [("Eastern and Southern Africa", 92690), ("Western and Central Africa", 85408),
+            ("Africa", 16575), ("South Asia", 50000)]]
+LANGUAGES = [FacetValue(name=n, count=c) for n, c in [("English", 578402), ("French", 16611)]]
+MAJOR_TYPES = [FacetValue(name=n, count=c) for n, c in
+               [("Project Documents", 300000), ("Economic & Sector Work", 40000)]]
+
+# Real catalogue spellings: a rare exact spelling next to the dominant official name.
+COUNTRY_VARIANTS = [FacetValue(name=n, count=c) for n, c in
+                    [("Egypt, Arab Republic of", 4381), ("Egypt", 14),
+                     ("Congo, Democratic Republic of", 5755), ("Congo, Republic of", 2514), ("Congo", 88),
+                     ("North Macedonia", 1997), ("Macedonia, former Yugoslav Republic of", 10),
+                     ("Macedonia", 3), ("Viet Nam", 10646), ("Vietnam", 166), ("Kenya", 9738)]]
+
+DEFAULT_FACETS = {"count_exact": COUNTRIES, "sectr_exact": SECTORS, "admreg_exact": REGIONS,
+                  "lang_exact": LANGUAGES, "majdocty_exact": MAJOR_TYPES}
 
 
 @pytest.fixture

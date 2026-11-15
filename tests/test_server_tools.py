@@ -7,14 +7,15 @@ import pytest
 from fastmcp import Client
 
 from server import wb_docs_mcp
-from tests.conftest import COUNTRIES, SECTORS, RecordingRouter, client_with, facet_router
+from server.wb_api import FacetValue
+from tests.conftest import COUNTRIES, DEFAULT_FACETS, RecordingRouter, client_with, facet_router
 
 REQUIRED_TOOLS = {"search_documents", "filter_documents", "get_document", "get_facets"}
 
 
 @pytest.fixture
 def router(monkeypatch) -> RecordingRouter:
-    router = facet_router({"count_exact": COUNTRIES, "sectr_exact": SECTORS})
+    router = facet_router(DEFAULT_FACETS)
     monkeypatch.setattr(wb_docs_mcp, "api", client_with(router))
     return router
 
@@ -47,9 +48,31 @@ async def test_search_maps_params(router):
     assert result.structured_content["documents"]
 
 
-async def test_search_rejects_rows_over_20(router):
-    result = await call("search_documents", {"query": "climate", "rows": 50})
+async def test_search_rejects_rows_over_10(router):
+    # a 10-row page fits the client's tool-output cap, so paging never skips documents
+    result = await call("search_documents", {"query": "climate", "rows": 11})
     assert result.is_error
+
+
+async def test_search_normalizes_language(router):
+    result = await call("search_documents", {"query": "climate", "language": "english"})
+    assert not result.is_error, text_of(result)
+    assert router.last_search()["lang_exact"] == "English"
+
+
+async def test_rejects_impossible_date(router):
+    result = await call("filter_documents", {"country": "Kenya", "start_date": "2022-02-30"})
+    assert result.is_error
+
+
+async def test_rejects_huge_offset(router):
+    result = await call("search_documents", {"query": "climate", "offset": 20000})
+    assert result.is_error
+
+
+async def test_get_facets_allows_listing_all_languages(router):
+    result = await call("get_facets", {"field": "language", "limit": 200})
+    assert not result.is_error, text_of(result)
 
 
 async def test_filter_requires_at_least_one_filter(router):
@@ -84,6 +107,25 @@ async def test_filter_ambiguous_value_errors_with_options(router):
     result = await call("filter_documents", {"sector": "water"})
     assert result.is_error
     assert "Water Resources" in text_of(result)
+
+
+async def test_filter_moves_major_type_given_as_document_type(monkeypatch):
+    majors = [FacetValue(name="Project Documents", count=300000),
+              FacetValue(name="Economic & Sector Work", count=40000)]
+    router = facet_router({"majdocty_exact": majors, "count_exact": COUNTRIES})
+    monkeypatch.setattr(wb_docs_mcp, "api", client_with(router))
+    result = await call("filter_documents", {"country": "Brazil", "document_type": "project documents"})
+    assert not result.is_error, text_of(result)
+    sent = router.last_search()
+    assert sent["majdocty_exact"] == "Project Documents"
+    assert "docty_exact" not in sent
+
+
+async def test_filter_accepts_explicit_nulls(router):
+    # small models often send every parameter, with null for unused ones
+    result = await call("filter_documents", {"country": "Kenya", "region": None, "topic": None,
+                                             "start_date": None, "end_date": None, "query": None})
+    assert not result.is_error, text_of(result)
 
 
 async def test_filter_unknown_value_suggests(router):
@@ -129,7 +171,7 @@ async def test_get_document_accepts_D_prefix(router):
     result = await call("get_document", {"document_id": "D33295056"})
     assert not result.is_error, text_of(result)
     assert router.calls[-1]["id"] == "33295056"
-    assert result.structured_content["display_title"]
+    assert result.structured_content["title"].startswith("Kenya")
 
 
 async def test_get_document_rejects_non_numeric_id(router):
@@ -142,6 +184,9 @@ async def test_get_facets_returns_sorted_values(router):
     assert not result.is_error, text_of(result)
     values = result.structured_content["values"]
     assert len(values) == 3 and values[0]["name"] == "Procurement Plan"
+    assert result.structured_content["truncated"] is True
+    assert result.structured_content["total_distinct"] > 3
+    assert "limit=" in result.structured_content["hint"]
 
 
 async def test_get_facets_rejects_unknown_field(router):

@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import sys
 from collections.abc import Awaitable
+from datetime import date
 from pathlib import Path
 from typing import Annotated, Any, TypeVar
 
@@ -27,6 +28,7 @@ if __package__ in (None, ""):  # executed as a script: make `server.*` importabl
 
 from server.wb_api import (  # noqa: E402
     FIELD_MAP,
+    DocumentDetail,
     FacetField,
     FacetResult,
     ResolveResult,
@@ -59,14 +61,17 @@ def _as_list(value: Any) -> Any:
 
 
 # Shared, validated parameter types (FastMCP turns these into a Pydantic model + JSON schema).
-Rows = Annotated[int, Field(ge=1, le=20, description="Results per page (1-20).")]
-Offset = Annotated[int, Field(ge=0, description="Results to skip; use `next_offset` from a previous page.")]
-IsoDate = Annotated[str, Field(pattern=r"^\d{4}-\d{2}-\d{2}$", description="Date as YYYY-MM-DD.")]
+# Rows is capped at 10 so one page always fits the agent's tool-output budget (no silent cut).
+Rows = Annotated[int, Field(ge=1, le=10, description="Results per page (1-10).")]
+Offset = Annotated[int, Field(ge=0, le=10_000, description="Results to skip; use `next_offset` "
+                                                           "from a previous page.")]
+# A real calendar date (rejects 2022-02-30); sent to the API as YYYY-MM-DD.
+IsoDate = Annotated[date, Field(description="Date as YYYY-MM-DD.")]
 FilterValues = Annotated[
-    list[str] | None,
+    Annotated[list[str], Field(max_length=5)] | None,
     BeforeValidator(_as_list),
-    Field(max_length=5, description="One value or a list of values (combined with OR). "
-                                    "Case-insensitive; must name a real catalogue value."),
+    Field(description="One value or a list of up to 5 values (combined with OR). "
+                      "Case-insensitive; must name a real catalogue value."),
 ]
 
 
@@ -78,19 +83,33 @@ async def _api(call: Awaitable[T]) -> T:
         raise ToolError(str(exc)) from exc
 
 
+async def _move_major_types(filters: dict[str, list[str] | None]) -> None:
+    """Models often pass a major type ("Project Documents") as document_type; move such values."""
+    kept: list[str] = []
+    for value in filters["document_type"] or []:
+        major = await _api(api.exact_value("major_document_type", value))
+        if major:
+            filters["major_document_type"] = [*(filters["major_document_type"] or []), major]
+        else:
+            kept.append(value)
+    filters["document_type"] = kept or None
+
+
 @mcp.tool
 async def get_facets(
     field: Annotated[FacetField, Field(description="Which field to list values for.")],
     query: Annotated[str | None, Field(description="Optional keywords to scope the counts, "
                                                    "e.g. 'Kenya' for values among Kenya documents.")] = None,
-    limit: Annotated[int, Field(ge=1, le=100, description="How many values to return (1-100).")] = 25,
+    limit: Annotated[int, Field(ge=1, le=200, description="How many values to return (1-200). "
+                                                          "Use 200 when the user asks for all values.")] = 25,
 ) -> FacetResult:
     """DISCOVER: list the distinct values of a field with document counts, most frequent first.
 
     Use for questions like "what document types are published most?", "which languages exist?",
     "what topics are covered?", or to see the exact values before calling filter_documents.
     Fields: country, region, topic, sector, document_type, major_document_type, language.
-    Returns {field, values: [{name, count}]}.
+    For "list all ..." questions use limit=200.
+    Returns {field, values: [{name, count}], total_distinct, truncated}.
     """
     return await _api(api.facets(field, query, limit))
 
@@ -148,30 +167,39 @@ async def filter_documents(
                         "For keyword-only questions use search_documents.")
     if start_date and end_date and start_date > end_date:
         raise ToolError(f"start_date {start_date} is after end_date {end_date}.")
+    await _move_major_types(filters)
 
-    params: dict[str, Any] = {"qterm": query, "strdate": start_date, "enddate": end_date}
+    params: dict[str, Any] = {"qterm": query,
+                              "strdate": start_date.isoformat() if start_date else None,
+                              "enddate": end_date.isoformat() if end_date else None}
     applied: dict[str, str] = {}
     for field, values in filters.items():
         if values:
-            exact: list[str] = []
-            for value in values:
-                exact += await _api(api.normalize(field, value))
-            applied[field] = params[FIELD_MAP[field]] = "^".join(dict.fromkeys(exact))
+            applied[field] = params[FIELD_MAP[field]] = await _exact_values(field, values)
     if newest_first or (newest_first is None and not query):
         params.update(srt="docdt", order="desc")
 
-    result = await _api(api.search(params, offset=offset, rows=rows))
+    result = await _api(api.search(
+        params, offset=offset, rows=rows,
+        empty_hint="No documents matched. Relax a filter, widen the dates, drop `query`, "
+                   "or check values with get_facets."))
     result.applied_filters = applied or None
-    if result.total == 0:
-        result.hint = ("No documents matched. Relax a filter, widen the dates, drop `query`, "
-                       "or check values with get_facets.")
     return result
+
+
+async def _exact_values(field: str, values: list[str]) -> str:
+    """Resolve user wording to catalogue values, OR-joined with '^' for the API."""
+    exact: list[str] = []
+    for value in values:
+        exact += await _api(api.normalize(field, value))
+    return "^".join(dict.fromkeys(exact))
 
 
 @mcp.tool
 async def search_documents(
     query: Annotated[str, Field(min_length=2, description="Keywords, e.g. 'climate resilience Kenya'.")],
-    language: Annotated[str | None, Field(description="Exact language, e.g. 'English', 'French'.")] = None,
+    language: Annotated[str | None, Field(description="Language, e.g. 'English', 'French' "
+                                                      "(case-insensitive).")] = None,
     rows: Rows = 5,
     offset: Offset = 0,
 ) -> SearchResult:
@@ -181,20 +209,20 @@ async def search_documents(
     Prefer filter_documents when the question names a country, document type or date range.
     Returns {total, offset, rows, next_offset, documents: [...], hint}. Page with offset=next_offset.
     """
-    result = await _api(api.search({"qterm": query, "lang_exact": language}, offset=offset, rows=rows))
-    if result.total == 0:
-        result.hint = "No documents matched. Try fewer or broader keywords, or use get_facets to explore."
-    return result
+    lang = await _exact_values("language", [language]) if language else None
+    return await _api(api.search(
+        {"qterm": query, "lang_exact": lang}, offset=offset, rows=rows,
+        empty_hint="No documents matched. Try fewer or broader keywords, or use get_facets to explore."))
 
 
 @mcp.tool
 async def get_document(
     document_id: Annotated[str, Field(pattern=r"^D?\d+$",
                                       description="Document id from a search result, e.g. '33295056' or 'D33295056'.")],
-) -> dict[str, Any]:
-    """INSPECT: full metadata for one document (title, abstract, dates, country, project,
-    authors, topics, PDF/text links, ...). Use after a search when the user wants details
-    about a specific document. Returns the World Bank record as-is.
+) -> DocumentDetail:
+    """INSPECT: key metadata for one document: title, date, type, country, region, project id
+    and name, report number, authors, topics, abstract (~1,500 chars) and PDF/text/page links.
+    Use after a search when the user wants details about a specific document.
     """
     return await _api(api.get_document(document_id))
 

@@ -32,7 +32,8 @@ CALLS = [
 
 def summarize(name: str, data) -> str:
     if name == "get_document":
-        return json.dumps({k: data.get(k) for k in ("id", "display_title", "docdt", "count", "docty")})
+        return json.dumps({k: data.get(k) for k in ("id", "title", "date", "country", "doc_type",
+                                                    "project_id", "authors")})
     if isinstance(data, dict) and "documents" in data:
         docs = [f"  - {d['date']} | {d['title'][:90]}" for d in data["documents"]]
         return (f"total={data['total']} next_offset={data['next_offset']} "
