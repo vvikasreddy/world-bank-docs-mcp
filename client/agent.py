@@ -27,6 +27,9 @@ from mcp.client.stdio import stdio_client
 from openai import AsyncOpenAI
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if __package__ in (None, ""):  # run as a script (python client/agent.py): make `client` importable
+    sys.path.insert(0, str(PROJECT_ROOT))
+from client.spinner import Spinner  # noqa: E402
 SERVER_PATH = PROJECT_ROOT / "server" / "wb_docs_mcp.py"
 MAX_STEPS = 8
 # Chars of one tool result passed back to the LLM. Sized so a full 10-row page or the complete
@@ -36,28 +39,41 @@ MAX_TOOL_TEXT = 9000
 PROVIDERS: dict[str, dict[str, str]] = {
     # qwen2.5:3b with a 16k context window, built from ollama/Modelfile (see README).
     "ollama": {"base_url": "http://localhost:11434/v1", "model": "qwen2.5-16k:3b"},
-    "groq": {"base_url": "https://api.groq.com/openai/v1", "model": "llama-3.1-8b-instant"},
+    # The task's example (llama-3.1-8b-instant) has been retired by Groq; gpt-oss-20b is free and
+    # handles tool calling well. Override with LLM_MODEL (e.g. openai/gpt-oss-120b, qwen/qwen3.8-27b).
+    "groq": {"base_url": "https://api.groq.com/openai/v1", "model": "openai/gpt-oss-20b"},
 }
 
 SYSTEM_PROMPT = """\
 You are a research assistant for World Bank documents. You can ONLY answer using the tools.
 
-How to work:
-1. "What exists / which are most common" questions (document types, languages, topics,
-   countries): call get_facets with the right field and answer from the counts.
-   If the user asks for ALL values, call get_facets with limit=100.
-2. Questions about a country, region, topic, sector, document type or date range: call
-   filter_documents. Pass the user's words (e.g. country="Brazil", sector="water and sanitation",
-   region="Sub-Saharan Africa"); dates as YYYY-MM-DD. "Economic and sector work" and
-   "project documents" are values of major_document_type. If it returns an error with
-   suggestions, retry with a suggested value. Use resolve_filter_values when unsure.
-3. Plain keyword questions: call search_documents.
-4. Call get_document only if the user asks for details of one specific document.
+First decide which kind of question it is:
+1. "What exists / which are most common" (document types, languages, topics, countries):
+   call get_facets with the right field and answer from the counts.
+   If the user asks for ALL values, call get_facets with limit=200.
+2. "Find / list documents" about a country, region, topic, sector, document type or date
+   range: call filter_documents. Pass the user's words (e.g. country="Brazil",
+   sector="water and sanitation", region="Sub-Saharan Africa"); dates as YYYY-MM-DD.
+   "Economic and sector work" and "project documents" are values of major_document_type.
+   If it returns an error with suggestions, retry with a suggested value. Use
+   resolve_filter_values when unsure. For plain keywords, call search_documents.
+3. "What can you tell me about X / explain / why / how / what does the World Bank say":
+   call search_documents (or filter_documents), then call get_document on the 2 most
+   relevant results to read their abstracts. Answer the question itself in a few sentences
+   or bullet points, using only what those documents say, then list the documents you used
+   (title, date, URL).
+4. Details of one specific document: call get_document.
 
-Answer rules: use only facts from tool results. Tool results are already ordered (newest
-first, or most relevant first): keep that order and start with the first item. For documents,
-list title, date and URL, and mention the `total` number of matches. If nothing was found,
-say so. Keep the answer concise."""
+Answer rules: use only facts from tool results, never outside knowledge. If the user asks
+for your opinion, report what the World Bank documents say instead. Tool results are
+already ordered: keep that order. Call results "most recent" only if they were sorted
+newest first. For document lists, give title, date and URL, and mention the `total` number
+of matches. If nothing was found, say so and stop: do not fill the gap from your own
+knowledge. Keep the answer concise.
+
+Format: the answer is printed in a plain terminal, so write plain text. No Markdown: no
+**bold**, no # headings, no tables, no [text](url) links. Use short paragraphs and simple
+"- " bullets, and write URLs out in full."""
 
 
 @dataclass(frozen=True)
@@ -182,14 +198,18 @@ async def run_agent(question: str, session: ToolCaller, llm: Any, model: str, to
 
 
 async def answer(question: str, settings: Settings, llm: Any = None,
-                 on_event: Callable[[str], None] | None = None) -> str:
-    """Start the MCP server over stdio, expose its tools to the LLM, and answer `question`."""
+                 on_event: Callable[[str], None] | None = None,
+                 server_logs: bool | None = None) -> str:
+    """Start the MCP server over stdio, expose its tools to the LLM, and answer `question`.
+
+    `server_logs` shows the server's stderr (default: only when `on_event` is set, i.e. tracing).
+    """
     llm = llm or AsyncOpenAI(base_url=settings.base_url, api_key=settings.api_key)
     params = StdioServerParameters(command=sys.executable, args=[str(SERVER_PATH)],
                                    cwd=str(PROJECT_ROOT))
-    # Server logs go to stderr; only show them when tracing.
+    show_logs = bool(on_event) if server_logs is None else server_logs
     with open(os.devnull, "w") as devnull:
-        errlog = sys.stderr if on_event else devnull
+        errlog = sys.stderr if show_logs else devnull
         async with stdio_client(params, errlog=errlog) as (read, write):
             async with ClientSession(read, write) as session:
                 await session.initialize()
@@ -201,7 +221,22 @@ async def answer(question: str, settings: Settings, llm: Any = None,
                                        on_event=on_event)
 
 
+def _root_cause(exc: BaseException) -> BaseException:
+    """anyio/MCP wrap failures in ExceptionGroups ("unhandled errors in a TaskGroup"); unwrap them."""
+    while isinstance(exc, BaseExceptionGroup) and exc.exceptions:
+        exc = exc.exceptions[0]
+    return exc
+
+
+def _utf8_output() -> None:
+    """Windows pipes/redirects default to cp1252, which can't encode characters models often emit."""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
+
 def main(argv: list[str] | None = None) -> None:
+    _utf8_output()
     parser = argparse.ArgumentParser(description="Ask questions about World Bank documents.")
     parser.add_argument("question", nargs="*", help="Question (omit for interactive mode)")
     parser.add_argument("-v", "--verbose", action="store_true",
@@ -212,11 +247,19 @@ def main(argv: list[str] | None = None) -> None:
     settings = load_settings(os.environ)
     trace = (lambda event: print(event, file=sys.stderr, flush=True)) if args.verbose else None
 
+    async def answer_with_progress(question: str) -> str:
+        # Verbose mode prints every step instead; the spinner only runs on a real terminal.
+        spinner = Spinner(enabled=not args.verbose and sys.stderr.isatty())
+        async with spinner:
+            return await answer(question, settings, on_event=trace or spinner.on_event,
+                                server_logs=args.verbose)
+
     def ask(question: str) -> None:
         try:
-            print(asyncio.run(answer(question, settings, on_event=trace)))
+            print(asyncio.run(answer_with_progress(question)))
         except Exception as exc:  # noqa: BLE001 - CLI boundary: report and keep going
-            print(f"Error: {exc}. Is {settings.provider} running/configured? "
+            cause = _root_cause(exc)
+            print(f"Error: {type(cause).__name__}: {cause}. Is {settings.provider} running/configured? "
                   f"(model: {settings.model}, url: {settings.base_url})", file=sys.stderr)
 
     if args.question:

@@ -5,3 +5,6 @@ __pycache__/
 .pytest_cache/
 .superpowers/
 node_modules/
+
+# interview task document: keep local, never publish
+*.docx

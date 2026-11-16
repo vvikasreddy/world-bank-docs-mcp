@@ -60,6 +60,15 @@ async def run(llm, session, **kw) -> str:
     return await run_agent("What languages exist?", session, llm, "test-model", tools=[], **kw)
 
 
+@pytest.fixture(autouse=True)
+def isolated_env(monkeypatch):
+    """main() loads the developer's .env; keep tests independent of it."""
+    from client import agent
+    monkeypatch.setattr(agent, "load_dotenv", lambda *a, **k: None)
+    for name in ("LLM_PROVIDER", "LLM_MODEL", "GROQ_API_KEY"):
+        monkeypatch.delenv(name, raising=False)
+
+
 def tool_messages(messages: list[dict]) -> list[dict]:
     return [m for m in messages if m["role"] == "tool"]
 
@@ -175,6 +184,33 @@ async def test_empty_choices_handled():
     assert await run(llm, FakeSession()) == "ok"
 
 
+async def test_system_prompt_all_values_limit_matches_get_facets_max():
+    from fastmcp import Client
+
+    from client.agent import SYSTEM_PROMPT
+    from server.wb_docs_mcp import mcp
+    async with Client(mcp) as client:
+        tool = next(t for t in await client.list_tools() if t.name == "get_facets")
+    limit_max = tool.inputSchema["properties"]["limit"]["maximum"]
+    assert f"limit={limit_max}" in SYSTEM_PROMPT
+
+
+def test_system_prompt_explain_questions_read_documents_and_cite():
+    # "what can you tell me about GST in India" must get an explanation, not just a list of titles
+    from client.agent import SYSTEM_PROMPT
+    text = SYSTEM_PROMPT.lower()
+    assert "what can you tell" in text and "get_document" in text
+    assert "opinion" in text  # opinion questions are answered with what the documents say
+    assert "most recent" in text  # don't call relevance-ordered results "most recent"
+
+
+def test_system_prompt_asks_for_plain_terminal_text():
+    # answers are printed in a terminal: Markdown (**bold**, tables, #) shows up as clutter
+    from client.agent import SYSTEM_PROMPT
+    text = SYSTEM_PROMPT.lower()
+    assert "plain text" in text and "markdown" in text and "table" in text
+
+
 def test_tool_result_to_text_caps_length():
     text = tool_result_to_text(ok("x" * (MAX_TOOL_TEXT * 2)))
     assert len(text) <= MAX_TOOL_TEXT + 50 and "truncated" in text
@@ -216,5 +252,94 @@ def test_main_interactive_exits_cleanly_on_eof(monkeypatch, capsys):
 
 
 def test_load_settings_groq():
+    # llama-3.1-8b-instant was retired by Groq; gpt-oss-20b is free, fast and good at tool calling
     s = load_settings({"LLM_PROVIDER": "groq", "GROQ_API_KEY": "k"})
-    assert s.model == "llama-3.1-8b-instant" and "groq.com" in s.base_url and s.api_key == "k"
+    assert s.model == "openai/gpt-oss-20b" and "groq.com" in s.base_url and s.api_key == "k"
+
+
+def _cp1252_stream():
+    import io
+    return io.TextIOWrapper(io.BytesIO(), encoding="cp1252")
+
+
+def test_main_prints_unicode_answer_to_cp1252_stream(monkeypatch):
+    # Windows pipes/redirects default to cp1252; models emit chars like U+2011 that it can't encode
+    import sys
+
+    from client import agent
+
+    async def fake_answer(question, settings, **kwargs):
+        return "Indonesia‑Country Private Sector Diagnostic"
+
+    monkeypatch.setattr(agent, "answer", fake_answer)
+    monkeypatch.setattr("sys.stdout", _cp1252_stream())
+    monkeypatch.setattr("sys.stderr", _cp1252_stream())
+    agent.main(["q"])
+    sys.stdout.flush()
+    sys.stderr.flush()
+    written = sys.stdout.buffer.getvalue().decode(sys.stdout.encoding)
+    assert "Private Sector Diagnostic" in written
+    assert b"Error" not in sys.stderr.buffer.getvalue()
+
+
+def test_main_error_shows_root_cause_of_exception_group(monkeypatch, capsys):
+    # anyio wraps failures in an ExceptionGroup whose message hides the real cause
+    from client import agent
+
+    async def failing_answer(question, settings, **kwargs):
+        raise ExceptionGroup("unhandled errors in a TaskGroup", [ValueError("model `x` does not exist")])
+
+    monkeypatch.setattr(agent, "answer", failing_answer)
+    agent.main(["q"])
+    err = capsys.readouterr().err
+    assert "model `x` does not exist" in err and "ValueError" in err
+
+
+class RecordingSpinner:
+    """Stands in for client.spinner.Spinner and records how main() drives it."""
+    log: list = []
+
+    def __init__(self, enabled=None, **kwargs):
+        RecordingSpinner.log.append(("enabled", enabled))
+
+    def on_event(self, event):
+        RecordingSpinner.log.append(("event", event))
+
+    async def __aenter__(self):
+        RecordingSpinner.log.append("enter")
+        return self
+
+    async def __aexit__(self, *exc_info):
+        RecordingSpinner.log.append("exit")
+
+
+def _run_main_with_spinner(monkeypatch, argv, isatty=True):
+    from client import agent
+
+    seen = {}
+
+    async def fake_answer(question, settings, on_event=None, server_logs=None, **kwargs):
+        seen["server_logs"] = server_logs
+        on_event("-> get_facets({})")
+        return "ok"
+
+    RecordingSpinner.log = []
+    monkeypatch.setattr(agent, "Spinner", RecordingSpinner)
+    monkeypatch.setattr(agent, "answer", fake_answer)
+    monkeypatch.setattr("sys.stderr.isatty", lambda: isatty, raising=False)
+    agent.main(argv)
+    return RecordingSpinner.log, seen
+
+
+def test_main_shows_spinner_while_answering(monkeypatch, capsys):
+    log, seen = _run_main_with_spinner(monkeypatch, ["q"])
+    assert log == [("enabled", True), "enter", ("event", "-> get_facets({})"), "exit"]
+    assert seen["server_logs"] is False  # server log lines would scribble over the spinner
+    assert capsys.readouterr().out.strip() == "ok"
+
+
+def test_main_verbose_disables_spinner_and_shows_server_logs(monkeypatch, capsys):
+    log, seen = _run_main_with_spinner(monkeypatch, ["-v", "q"])
+    assert log[0] == ("enabled", False)
+    assert seen["server_logs"] is True
+    assert "-> get_facets({})" in capsys.readouterr().err  # verbose trace still printed
